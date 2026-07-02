@@ -1,0 +1,55 @@
+[log]
+enabled = false
+path = "~/.local/state/nudgepost/messages.jsonl"
+
+[rate_limit]
+enabled = true
+default_per_second = 20.0
+default_burst = 20
+
+# send_when supports "always" or "screen_locked".
+# If lock state is unknown, Nudgepost sends and logs a warning.
+
+[channels.ding_main]
+kind = "dingtalk"
+enabled = true
+send_when = "always"
+webhook = "https://oapi.dingtalk.com/robot/send?access_token=CHANGE_ME"
+secret = ""
+timeout_seconds = 10
+rate_limit = { per_second = 1.0, burst = 1 }
+
+[channels.feishu_main]
+kind = "feishu"
+enabled = true
+send_when = "always"
+webhook = "https://open.feishu.cn/open-apis/bot/v2/hook/CHANGE_ME"
+secret = ""
+timeout_seconds = 10
+rate_limit = { per_second = 5.0, burst = 5 }
+
+[channels.feishu_user]
+kind = "feishu_app"
+enabled = false
+send_when = "always"
+app_id = "cli_CHANGE_ME"
+app_secret = "CHANGE_ME"
+receive_id_type = "open_id"
+receive_id = "ou_CHANGE_ME"
+timeout_seconds = 10
+rate_limit = { per_second = 5.0, burst = 5 }
+
+[channels.custom_main]
+kind = "custom"
+enabled = true
+send_when = "always"
+url = "https://example.com/webhook"
+timeout_seconds = 10
+
+[channels.custom_main.headers]
+X-Source = "Nudgepost"
+
+[routes.alerts]
+enabled = true
+send_when = "always"
+channels = ["ding_main", "feishu_main", "custom_main"]
